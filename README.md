@@ -24,7 +24,7 @@ git clone https://github.com/tnyaguire/survivor-api.git
 ```
 
 ```bash
-cd robot-apocalypse-survivors
+cd survivor-api
 ```
 
 ```bash

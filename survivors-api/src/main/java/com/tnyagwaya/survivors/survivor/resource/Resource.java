@@ -21,7 +21,7 @@ public  class Resource extends BaseEntity {
 
     private BigDecimal quantity;
 
-    private Units units;
+    private Unit unit;
 
     private String description;
 

@@ -48,7 +48,7 @@ public class SurvivorController {
                             schema = @Schema(implementation = ErrorObject.class))})
     })
     @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody SurvivorInfo survivorInfo){
+    public ResponseEntity<?> register(@Valid @RequestBody SurvivorInfo survivorInfo) {
         log.info("Registering survivor: {}", survivorInfo);
         final Survivor survivor = survivorService.addSurvivor(survivorInfo);
         return ResponseEntity.status(HttpStatus.CREATED).body(survivor);
@@ -64,13 +64,12 @@ public class SurvivorController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorObject.class))})
     })
-    @PutMapping("/{nationalId}/location")
-    public ResponseEntity<?> updateLocation(@Valid @RequestBody final Location location, @PathVariable String nationalId) {
+    @PutMapping("/{survivorId}/location")
+    public ResponseEntity<?> updateLocation(@Valid @RequestBody final Location location, @PathVariable String survivorId) {
         log.info("updating location");
-        survivorService.updateLocation(location,nationalId);
+        survivorService.updateLocation(location, survivorId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(location);
     }
-
 
     @Operation(summary = "Flag survivor as infected", description = "Provided with a valid object representation, this " +
             "endpoint allows for a survivor to be flagged as infected. A survivor is marked as infected when at least three other survivors report their\n" +

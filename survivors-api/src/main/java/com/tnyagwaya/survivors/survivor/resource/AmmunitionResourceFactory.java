@@ -14,10 +14,9 @@ public class AmmunitionResourceFactory extends ResourceFactory{
 
     @Override
     public Resource create(ResourceInfo resourceInfo) {
-        final Ammunition resource = new Ammunition();
+        final Ammunition ammunition = new Ammunition();
         final ResourceAttributes attributes = resourceInfo.getAttributes();
-        resource.setQuantity(attributes.getAs("quantity", BigDecimal.class));
-        resource.setDescription(attributes.getAs("description", String.class));
-        return resource;
+        ammunition.setType(attributes.getAs(Constants.Ammunition.TYPE, AmmunitionType.class));
+        return ammunition;
     }
 }

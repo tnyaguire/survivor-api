@@ -3,7 +3,7 @@ package com.tnyagwaya.survivors.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tnyagwaya.survivors.survivor.resource.ResourceAttributes;
 import com.tnyagwaya.survivors.survivor.resource.ResourceType;
-import com.tnyagwaya.survivors.survivor.resource.Units;
+import com.tnyagwaya.survivors.survivor.resource.Unit;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,12 +18,12 @@ public class ResourceInfo implements Serializable {
     @JsonProperty("resourceType")
     private ResourceType resourceType;
 
-    @JsonProperty("units")
-    private Units units;
+    @JsonProperty("unit")
+    private Unit unit;
 
     @JsonProperty("quantity")
     private BigDecimal quantity;
 
     @JsonProperty("attributes")
-    private ResourceAttributes attributes;
+    private ResourceAttributes attributes = new ResourceAttributes();
 }

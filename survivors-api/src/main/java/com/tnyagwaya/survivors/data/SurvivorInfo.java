@@ -2,7 +2,10 @@ package com.tnyagwaya.survivors.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tnyagwaya.survivors.survivor.Gender;
 import com.tnyagwaya.survivors.survivor.Location;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -26,6 +29,9 @@ public class SurvivorInfo implements Serializable {
     @NotBlank
     @JsonProperty(value="lastName", required = true)
     private String lastName;
+
+    @JsonProperty(value="gender", required = true)
+    private Gender gender;
 
     @NotEmpty
     @NotBlank

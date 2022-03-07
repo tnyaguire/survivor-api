@@ -15,4 +15,12 @@ public class Location {
 
     @Column(name="longitude")
     private BigDecimal longitude;
+
+    public Location() {
+    }
+
+    public Location(BigDecimal latitude, BigDecimal longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-//@Component
+@Component
 public class FoodResourceFactory extends ResourceFactory{
     @Override
     public boolean supports(ResourceInfo resourceInfo) {
@@ -16,8 +16,7 @@ public class FoodResourceFactory extends ResourceFactory{
     public Resource create(ResourceInfo resourceInfo) {
         final Food resource = new Food();
         final ResourceAttributes attributes = resourceInfo.getAttributes();
-        resource.setQuantity(attributes.getAs("quantity", BigDecimal.class));
-        resource.setDescription(attributes.getAs("description", String.class));
+        resource.setCalories(attributes.getAs(Constants.Food.CALORIES, BigDecimal.class));
         return resource;
     }
 }

@@ -59,6 +59,8 @@ public class GenericExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAllExceptions(Exception exception, WebRequest request) {
         ResponseStatus responseStatus = exception.getClass().getAnnotation(ResponseStatus.class);

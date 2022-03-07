@@ -11,4 +11,6 @@ import java.math.BigDecimal;
 @Entity
 public class Food extends Resource{
     private BigDecimal calories;
+    private boolean halaal;
+    private BigDecimal proteinContent;
 }

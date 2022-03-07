@@ -78,10 +78,6 @@ public class SurvivorServiceImpl implements SurvivorService {
     }
 
     private Resource createResource(final ResourceInfo resourceInfo, final Survivor survivor, final String createdBy){
-        log.info("creating resource: {}", resourceInfo);
-
-        log.info("******ResourceFactories count: {}****", resourceFactories.size());
-
         final ResourceFactory factory = resourceFactories.stream().filter(r -> r.supports(resourceInfo))
                 .findAny()
                 .orElseThrow();

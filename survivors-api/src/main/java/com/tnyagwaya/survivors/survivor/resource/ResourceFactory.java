@@ -7,6 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class ResourceFactory {
 
+    public int order(){
+        return Integer.MIN_VALUE;
+    }
+
     public abstract boolean supports(final ResourceInfo resourceInfo);
 
     public Resource create(final ResourceInfo resourceInfo, final Survivor survivor, String reportedBy){
@@ -15,10 +19,12 @@ public abstract class ResourceFactory {
         resource.setCreatedBy(reportedBy);
         resource.setDescription(resourceInfo.getDescription());
         resource.setQuantity(resourceInfo.getQuantity());
-        resource.setUnits(resourceInfo.getUnits());
+        resource.setUnit(resourceInfo.getUnit());
         log.info("Creating resource: {}", resource);
         return resource;
     }
 
-    public abstract Resource create(final ResourceInfo resourceInfo);
+    public Resource create(ResourceInfo resourceInfo) {
+        return new Resource();
+    }
 }

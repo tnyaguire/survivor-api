@@ -20,11 +20,11 @@ system.
 We can easily run the whole with only a single command:
 
 ```bash
-git clone https://github.com/opengeospatial/teamengine-docker.git
+git clone https://github.com/tnyaguire/survivor-api.git
 ```
 
 ```bash
-cd robot-apocalypse-survivors
+cd survivor-api
 ```
 
 ```bash

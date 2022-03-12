@@ -17,5 +17,5 @@ public interface SurvivorRepository extends JpaRepository<Survivor,Long> {
     Page<Survivor> findByInfected(boolean infected, Pageable pageable);
 
     @Query(value = "select case when infected=0 then 'NOT_INFECTED' else 'INFECTED' end as status, count(*) as count, count(*) * 100.0 / sum(count(*)) over() as percentage, sum(count(*)) over() as totalSurvivors FROM survivor group by infected", nativeQuery = true)
-    List<SurvivorSummary> generateReportSummary();
+    List<Stats> generateReportSummary();
 }

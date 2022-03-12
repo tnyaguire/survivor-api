@@ -20,5 +20,5 @@ public interface SurvivorService {
 
     Page<SurvivorInfo> findByInfected(boolean infected, Pageable pageable);
 
-    List<SurvivorSummary> generateReportSummary();
+    List<Stats> generateReportSummary();
 }

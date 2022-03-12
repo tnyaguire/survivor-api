@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 @Schema(description = "A summary of survivor information for a given status.")
-public interface SurvivorSummary {
+public interface Stats {
 
     @Schema(description = "Number of survivors for the given status.")
     BigDecimal getCount();

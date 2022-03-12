@@ -81,7 +81,7 @@ public class SurvivorServiceImpl implements SurvivorService {
     }
 
     @Transactional(readOnly = true)
-    public List<SurvivorSummary> generateReportSummary(){
+    public List<Stats> generateReportSummary(){
         return survivorRepository.generateReportSummary();
     }
 

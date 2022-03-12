@@ -3,7 +3,7 @@ package com.tnyagwaya.survivors.api;
 import com.tnyagwaya.survivors.data.ErrorObject;
 import com.tnyagwaya.survivors.data.SurvivorInfo;
 import com.tnyagwaya.survivors.survivor.SurvivorService;
-import com.tnyagwaya.survivors.survivor.SurvivorSummary;
+import com.tnyagwaya.survivors.survivor.Stats;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,7 +56,7 @@ public class ReportingController {
             @ApiResponse(responseCode = "400", description = "Represents an Error Caused by the Violation of a Business Rule")
     })
     @GetMapping("/survivors/stats")
-    public List<SurvivorSummary> getSurvivorSummary(){
+    public List<Stats> getStatistics(){
         log.info("Survivors summary");
        return survivorService.generateReportSummary();
     }

@@ -2,8 +2,8 @@ package com.tnyagwaya.survivors.api;
 
 import com.tnyagwaya.survivors.data.ErrorObject;
 import com.tnyagwaya.survivors.data.SurvivorInfo;
-import com.tnyagwaya.survivors.robot.RobotService;
-import com.tnyagwaya.survivors.robot.RobotsInfo;
+import com.tnyagwaya.survivors.survivor.SurvivorService;
+import com.tnyagwaya.survivors.survivor.SurvivorSummary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,15 +11,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import java.util.List;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -31,22 +34,30 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class ReportingController {
 
     @Autowired
-    private RobotService survivorService;
+    private SurvivorService survivorService;
 
-    @Operation(summary = "List of robots", description = "")
+    @Operation(summary = "List survivors by Infection status", description = "")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Represents a list of robots",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = SurvivorInfo.class))}),
+            @ApiResponse(responseCode = "200", description = "Represents a Page of survivors"),
             @ApiResponse(responseCode = "400", description = "Represents an Error Caused by the Violation of a Business Rule",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorObject.class))})
     })
-    @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody SurvivorInfo survivorInfo){
-
-        log.info("Registering survivor: {}", survivorInfo);
-       return ResponseEntity.ok().build();
+    @GetMapping("/survivors")
+    public Page<SurvivorInfo> getSurvivors(@RequestParam(required = false,
+            defaultValue = "false") boolean infected, Pageable pageable){
+        log.info("Listing survivors: Infected = {}", infected);
+       return survivorService.findByInfected(infected, pageable);
     }
 
+    @Operation(summary = "Survivor Statistics", description = "Statistics on survivors and their infection status, including count and percentages")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Represents survivor stats"),
+            @ApiResponse(responseCode = "400", description = "Represents an Error Caused by the Violation of a Business Rule")
+    })
+    @GetMapping("/survivors/stats")
+    public List<SurvivorSummary> getSurvivorSummary(){
+        log.info("Survivors summary");
+       return survivorService.generateReportSummary();
+    }
 }

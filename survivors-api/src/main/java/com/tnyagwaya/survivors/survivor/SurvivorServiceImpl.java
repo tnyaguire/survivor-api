@@ -10,7 +10,10 @@ import com.tnyagwaya.survivors.survivor.resource.ResourceFactory;
 import com.tnyagwaya.survivors.survivor.resource.ResourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Service
+@Transactional
 public class SurvivorServiceImpl implements SurvivorService {
 
     private final List<ResourceFactory> resourceFactories;
@@ -50,7 +54,6 @@ public class SurvivorServiceImpl implements SurvivorService {
 
     @Override
     public FlagInfectionRequest flagInfection(FlagInfectionRequest flagRequest) {
-
         final Survivor survivor = survivorRepository.findBySurvivorIdIgnoreCase(flagRequest.getSurvivorId())
                 .orElseThrow(() -> new NoSuchElementException("Survivor for id not found."));
 
@@ -77,6 +80,11 @@ public class SurvivorServiceImpl implements SurvivorService {
         return survivorRepository.findBySurvivorIdIgnoreCase(nationalId);
     }
 
+    @Transactional(readOnly = true)
+    public List<SurvivorSummary> generateReportSummary(){
+        return survivorRepository.generateReportSummary();
+    }
+
     private Resource createResource(final ResourceInfo resourceInfo, final Survivor survivor, final String createdBy){
         final ResourceFactory factory = resourceFactories.stream().filter(r -> r.supports(resourceInfo))
                 .findAny()
@@ -86,12 +94,43 @@ public class SurvivorServiceImpl implements SurvivorService {
 
     private Survivor generateSurvivor(final SurvivorInfo info){
         final Survivor survivor = new Survivor();
+        survivor.setName(info.getName());
         survivor.setLastName(info.getLastName());
         survivor.setLastLocation(info.getLocation());
         survivor.setDob(info.getDob());
+        survivor.setGender(info.getGender());
         survivor.setSurvivorId(info.getSurvivorId());
         survivor.setCreatedBy(info.getCreatedBy());
         return survivor;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SurvivorInfo> findByInfected(boolean infected, Pageable pageable) {
+        return survivorRepository.findByInfected(infected, pageable)
+                .map(this::from);
+    }
+
+    public  SurvivorInfo from(final Survivor survivor){
+        final SurvivorInfo survivorInfo = new SurvivorInfo();
+        survivorInfo.setName(survivor.getName());
+        survivorInfo.setLastName(survivor.getLastName());
+        survivorInfo.setLocation(survivor.getLastLocation());
+        survivorInfo.setDob(survivor.getDob());
+        survivorInfo.setGender(survivor.getGender());
+        survivorInfo.setSurvivorId(survivor.getSurvivorId());
+        survivorInfo.setCreatedBy(survivor.getCreatedBy());
+        final List<ResourceInfo> resourceInfos = survivor.getResources().stream()
+                .map(r -> {
+                    final ResourceInfo resourceInfo = new ResourceInfo();
+                    resourceInfo.setResourceType(r.getResourceCategory());
+                    resourceInfo.setQuantity(r.getQuantity());
+                    resourceInfo.setUnit(r.getUnit());
+                    resourceInfo.setDescription(r.getDescription());
+                    return resourceInfo;
+                }).collect(Collectors.toList());
+        survivorInfo.setResources(resourceInfos);
+        return survivorInfo;
     }
 
 }

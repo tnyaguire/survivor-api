@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Data
 @Entity
-@DiscriminatorValue("Medication")
+@DiscriminatorValue("MEDICATION")
 public class Medication extends Resource {
     private String name;
     private String description;

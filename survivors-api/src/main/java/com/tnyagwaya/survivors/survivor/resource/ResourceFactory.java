@@ -20,6 +20,7 @@ public abstract class ResourceFactory {
         resource.setDescription(resourceInfo.getDescription());
         resource.setQuantity(resourceInfo.getQuantity());
         resource.setUnit(resourceInfo.getUnit());
+        resource.setResourceCategory(resourceInfo.getResourceType());
         log.info("Creating resource: {}", resource);
         return resource;
     }

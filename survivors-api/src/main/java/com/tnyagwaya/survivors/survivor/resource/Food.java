@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import java.math.BigDecimal;
 
 @Data
-@DiscriminatorValue("Food")
+@DiscriminatorValue("FOOD")
 @Entity
 public class Food extends Resource{
     private BigDecimal calories;
-    private boolean halaal;
-    private BigDecimal proteinContent;
+    private boolean halaal = false;
+    private BigDecimal proteinContent = BigDecimal.ZERO;
 }

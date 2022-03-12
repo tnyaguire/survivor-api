@@ -47,7 +47,6 @@ class SurvivorControllerTest {
     }
 
     private SurvivorInfo createValidSurvivor() {
-
         final SurvivorInfo survivorInfo = new SurvivorInfo();
         survivorInfo.setName("Thomas");
         survivorInfo.setLastName("Nyagwaya");
@@ -105,7 +104,5 @@ class SurvivorControllerTest {
         info.getAttributes().addData(Constants.Water.TYPE, WaterType.MINERAL_WATER);
         return info;
     }
-
-
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Entity
-@DiscriminatorValue("Ammunition")
+@DiscriminatorValue("AMMUNITION")
 @Data
 public class Ammunition extends Resource {
 

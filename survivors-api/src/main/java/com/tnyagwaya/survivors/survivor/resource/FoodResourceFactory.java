@@ -16,7 +16,7 @@ public class FoodResourceFactory extends ResourceFactory{
     public Resource create(ResourceInfo resourceInfo) {
         final Food resource = new Food();
         final ResourceAttributes attributes = resourceInfo.getAttributes();
-        resource.setCalories(attributes.getAs(Constants.Food.CALORIES, BigDecimal.class));
+        resource.setCalories(new BigDecimal(attributes.getAs(Constants.Food.CALORIES, String.class)));
         return resource;
     }
 }

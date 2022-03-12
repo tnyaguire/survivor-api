@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 
 @Entity
 @Data
-@DiscriminatorValue("Water")
+@DiscriminatorValue("WATER")
 public class Water extends Resource {
 
     @Enumerated(EnumType.STRING)

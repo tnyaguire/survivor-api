@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class Survivor extends BaseEntity {
     @Embedded
     private Location lastLocation;
 
-    @OneToMany(mappedBy = "survivor")
+    @OneToMany(mappedBy = "survivor", fetch = FetchType.EAGER)
     private List<Resource> resources;
 
     private int infectionFlagCount;

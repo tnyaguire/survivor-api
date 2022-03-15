@@ -27,7 +27,7 @@ git clone https://github.com/tnyaguire/survivor-api.git
 cd survivor-api
 ```
 
-Run docker-compose. This might take bwtween 3-8mins on the firat run as it download all necessary images and mvn dependencies.
+Run docker-compose. This might take between 3-8mins on the first run as it download all necessary images and mvn dependencies.
 
 ```bash
 docker-compose up

@@ -1,6 +1,6 @@
 # ROBOT Apocalypse REST API
 
-This application was developed to demonstrate Spring Boot with MySQL with simple API.
+This application was built in the midst of a Robot apocalypse to track robots and survivors.
 
 ## Technologies
 

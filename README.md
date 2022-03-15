@@ -31,8 +31,6 @@ cd survivor-api
 docker-compose up
 ```
 
-Docker will pull the MySQL and Spring Boot images (if our machine does not have it before).
-
 The services can be run on the background with command:
 
 ```bash
@@ -47,7 +45,7 @@ Stopping all the running containers is also simple with a single command:
 docker-compose down
 ```
 
-If you need to stop and remove all containers, networks, and all images used by any service in <em>
+To stop and remove all containers, networks, and all images used by any service in <em>
 docker-compose.yml</em> file, use the command:
 
 ```bash

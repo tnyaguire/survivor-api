@@ -37,6 +37,10 @@ The services can be run on the background with command:
 docker-compose up -d
 ```
 
+## API Documentation
+
+The api documentation is accessible on http://localhost:8080/spec.html
+
 ## Stop the System
 
 Stopping all the running containers is also simple with a single command:

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -120,7 +121,7 @@ class SurvivorServiceImplIntegrationTest extends AbstractTestUtilities {
         survivorService.flagInfection(new FlagInfectionRequest(survivor.getSurvivorId(),"bug-reporter-1"));
         survivorService.flagInfection(new FlagInfectionRequest(survivor.getSurvivorId(),"bug-reporter-2"));
         survivorService.flagInfection(new FlagInfectionRequest(survivor.getSurvivorId(),"bug-reporter-3"));
-        final Page<SurvivorInfo> byInfected = survivorService.findByInfected(false, PageRequest.of(0, 1));
+        final Page<SurvivorInfo> byInfected = survivorService.findByInfected(true, PageRequest.of(0, 1));
         assertThat(byInfected.getTotalElements()).isGreaterThan(0);
     }
 }

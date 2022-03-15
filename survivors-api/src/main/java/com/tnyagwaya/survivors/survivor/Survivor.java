@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -39,8 +40,8 @@ public class Survivor extends BaseEntity {
     @Embedded
     private Location lastLocation;
 
-    @OneToMany(mappedBy = "survivor", fetch = FetchType.EAGER)
-    private List<Resource> resources;
+    @OneToMany(mappedBy = "survivor")
+    private List<Resource> resources = new ArrayList<>();
 
     private int infectionFlagCount;
 

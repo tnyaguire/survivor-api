@@ -16,7 +16,7 @@ public interface SurvivorService {
 
     FlagInfectionRequest flagInfection(final FlagInfectionRequest flagInfectionRequest);
 
-    Optional<Survivor> findByNationalId(final String nationalId);
+    Optional<Survivor> findBySurvivorId(final String survivorId);
 
     Page<SurvivorInfo> findByInfected(boolean infected, Pageable pageable);
 

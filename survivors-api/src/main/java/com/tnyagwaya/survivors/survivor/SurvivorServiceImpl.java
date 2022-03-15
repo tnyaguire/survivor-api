@@ -56,14 +56,11 @@ public class SurvivorServiceImpl implements SurvivorService {
     public FlagInfectionRequest flagInfection(FlagInfectionRequest flagRequest) {
         final Survivor survivor = survivorRepository.findBySurvivorIdIgnoreCase(flagRequest.getSurvivorId())
                 .orElseThrow(() -> new NoSuchElementException("Survivor for id not found."));
-
         final Optional<InfectedSurvivorFlag> flagOptional = infectedSurvivorFlagRepository.findBySurvivorAndReportedByIgnoringCase(survivor, flagRequest.getReportedBy());
-
         if(flagOptional.isPresent()){
             log.info("Similar report already exist");
             return flagRequest;
         }
-
         final InfectedSurvivorFlag flag = new InfectedSurvivorFlag(survivor, flagRequest.getReportedBy());
 
         infectedSurvivorFlagRepository.save(flag);
@@ -76,7 +73,7 @@ public class SurvivorServiceImpl implements SurvivorService {
     }
 
     @Override
-    public Optional<Survivor> findByNationalId(String nationalId) {
+    public Optional<Survivor> findBySurvivorId(String nationalId) {
         return survivorRepository.findBySurvivorIdIgnoreCase(nationalId);
     }
 

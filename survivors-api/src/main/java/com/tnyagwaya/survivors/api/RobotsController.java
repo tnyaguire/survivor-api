@@ -29,7 +29,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class RobotsController {
 
     @Autowired
-    private RobotService survivorService;
+    private RobotService robotService;
 
     @Operation(summary = "List of robots", description = "")
     @ApiResponses(value = {
@@ -42,6 +42,6 @@ public class RobotsController {
     })
     @GetMapping
     public ResponseEntity<?> getRobots(@RequestParam(defaultValue="All") RobotCategory robotCategory){
-        return ResponseEntity.status(HttpStatus.OK).body(survivorService.getRobots(robotCategory));
+        return ResponseEntity.status(HttpStatus.OK).body(robotService.getRobots(robotCategory));
     }
 }

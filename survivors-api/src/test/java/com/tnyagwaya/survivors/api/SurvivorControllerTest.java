@@ -1,32 +1,27 @@
 package com.tnyagwaya.survivors.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tnyagwaya.survivors.data.ResourceInfo;
+import com.tnyagwaya.survivors.data.FlagInfectionRequest;
 import com.tnyagwaya.survivors.data.SurvivorInfo;
-import com.tnyagwaya.survivors.survivor.Gender;
 import com.tnyagwaya.survivors.survivor.Location;
 import com.tnyagwaya.survivors.survivor.SurvivorService;
-import com.tnyagwaya.survivors.survivor.resource.AmmunitionType;
-import com.tnyagwaya.survivors.survivor.resource.Constants;
-import com.tnyagwaya.survivors.survivor.resource.ResourceType;
-import com.tnyagwaya.survivors.survivor.resource.Unit;
-import com.tnyagwaya.survivors.survivor.resource.WaterType;
+import common.AbstractTestUtilities;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(controllers = {SurvivorController.class})
-class SurvivorControllerTest {
+class SurvivorControllerTest extends AbstractTestUtilities {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,70 +34,51 @@ class SurvivorControllerTest {
 
     @Test
     public void shouldAddSurvivorIfRequestIsValid() throws Exception {
-        final SurvivorInfo info = createValidSurvivor();
+        final SurvivorInfo info = getSurvivorInfo();
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/survivors")
                         .content(objectMapper.writeValueAsString(info))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
-    private SurvivorInfo createValidSurvivor() {
-        final SurvivorInfo survivorInfo = new SurvivorInfo();
-        survivorInfo.setName("Thomas");
-        survivorInfo.setLastName("Nyagwaya");
-        survivorInfo.setSurvivorId("Survivor01");
-        survivorInfo.setCreatedBy("survivor00");
-        survivorInfo.setLocation(new Location(new BigDecimal(-17.82772), new BigDecimal(31.05337)));
-        survivorInfo.setGender(Gender.MALE);
-        survivorInfo.setDob(LocalDate.of(1983, 11, 24));
 
-        List<ResourceInfo> resources = new ArrayList<>();
-        resources.add(getAmmo());
-        resources.add(getWater());
-        resources.add(getCannedMeat());
-        resources.add(getRice());
-        survivorInfo.setResources(resources);
-        return survivorInfo;
+    @Test
+    public void shouldUpdateSurvivorLocation() throws Exception {
+        final SurvivorInfo info = getSurvivorInfo();
+
+      mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/survivors")
+                        .content(objectMapper.writeValueAsString(info))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        final Location location = new Location(new BigDecimal(-17.82300), new BigDecimal(31.01000));
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/survivors/{survivorId}/location",info.getSurvivorId())
+                        .content(objectMapper.writeValueAsString(location))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(jsonPath("$.latitude").value(new BigDecimal(-17.82300)));
     }
 
-    private ResourceInfo getAmmo() {
-        final ResourceInfo ammo  = new ResourceInfo();
-        ammo.setResourceType(ResourceType.AMMUNITION);
-        ammo.setQuantity(new BigDecimal(20067));
-        ammo.setUnit(Unit.COUNT);
-        ammo.setDescription("10 caliber bullet armor piercing");
-        ammo.getAttributes().addData(Constants.Ammunition.TYPE, AmmunitionType.PROJECTILE);
-        return ammo;
+    @Test
+    public void shouldReportInfectedSurvivor() throws Exception {
+        final SurvivorInfo info = getSurvivorInfo();
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/survivors")
+                        .content(objectMapper.writeValueAsString(info))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        final FlagInfectionRequest flagInfectionRequest = new FlagInfectionRequest(info.getSurvivorId(),"bug-reporter-1");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/survivors/flag")
+                        .content(objectMapper.writeValueAsString(flagInfectionRequest))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(jsonPath("$.survivorId").value(info.getSurvivorId()));
+
     }
 
-    private ResourceInfo getWater() {
-        final ResourceInfo info  = new ResourceInfo();
-        info.setResourceType(ResourceType.WATER);
-        info.setQuantity(new BigDecimal(2000));
-        info.setUnit(Unit.LITRES);
-        info.setDescription("Mineral water");
-        info.getAttributes().addData(Constants.Water.TYPE, WaterType.MINERAL_WATER);
-        return info;
-    }
 
-    private ResourceInfo getRice() {
-        final ResourceInfo info  = new ResourceInfo();
-        info.setResourceType(ResourceType.FOOD);
-        info.setQuantity(new BigDecimal(25));
-        info.setUnit(Unit.KGS);
-        info.setDescription("Rice");
-        info.getAttributes().addData(Constants.Water.TYPE, WaterType.MINERAL_WATER);
-        return info;
-    }
 
-    private ResourceInfo getCannedMeat() {
-        final ResourceInfo info  = new ResourceInfo();
-        info.setResourceType(ResourceType.FOOD);
-        info.setQuantity(new BigDecimal(0.5));
-        info.setUnit(Unit.KGS);
-        info.setDescription("Bull Brand Canned Corned Meat");
-        info.getAttributes().addData(Constants.Water.TYPE, WaterType.MINERAL_WATER);
-        return info;
-    }
 
 }

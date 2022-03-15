@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Component
@@ -15,10 +16,19 @@ import java.util.Optional;
 public class SurvivorInfectedEventListener implements SurvivorObserver<SurvivorInfectedEvent> {
 
     private final SurvivorRepository survivorRepository;
+
     private final ConfigProperties properties;
+
+    private final ObservableEventService observableEventService;
+
+    @PostConstruct
+    public void init(){
+        observableEventService.registerObserver(this,SurvivorInfectedEvent.class);
+    }
 
     @Override
     public void update(SurvivorInfectedEvent event) {
+        log.info("handling SurvivorInfectedEvent: {}", event);
         final Optional<Survivor> optional = survivorRepository.findBySurvivorIdIgnoreCase(event.getSurvivorId());
         if (!optional.isPresent()) {
             log.info("No survivor with id found");

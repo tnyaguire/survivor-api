@@ -26,8 +26,10 @@ public class ObservableEventServiceImpl implements ObservableEventService {
     public void notifyObservers(AbstractObservableEvent event){
         final Set<SurvivorObserver> listeners = eventListeners.get(event.getClass());
         if(CollectionUtils.isEmpty(listeners)){
+            log.info("No listeners found for: {}", event.getClass());
             return;
         }
+        log.info("Processing {} listeners for : {}", listeners.size(), event.getClass());
         listeners.stream().forEach(listener -> listener.update(event));
     }
 

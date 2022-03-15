@@ -24,5 +24,6 @@ public class InfectedSurvivorFlag extends BaseEntity {
     public InfectedSurvivorFlag(Survivor survivor, String reportedBy) {
         this.survivor = survivor;
         this.reportedBy = reportedBy;
+        this.setCreatedBy(reportedBy);
     }
 }

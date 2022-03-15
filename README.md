@@ -17,7 +17,7 @@ system.
 
 ## Running the project
 
-We can easily run the whole with only a single command:
+We can easily run the whole with only a single command. Ensure you have Docker running.
 
 ```bash
 git clone https://github.com/tnyaguire/survivor-api.git
